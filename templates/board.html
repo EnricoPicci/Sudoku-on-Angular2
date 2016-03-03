@@ -1,0 +1,18 @@
+<div class="boardClass">
+    <table>
+        <tbody>
+            <tr *ngFor="#rowOfCells of board.rows">
+                <td *ngFor="#cellInRow of rowOfCells.cells">
+                    <cell-cmp [cell]="cellInRow"></cell-cmp>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="consoleClass">
+    <button id="solveButton" class="basicButton" type="button" (click)="solve()">solve</button>
+    <button id="resetButton" class="basicButton" type="button" (click)="resetBoard()">reset</button>
+</div>
+<div class="errorMessageClass sudokuAlert sudokuAlert-danger" [hidden]="!errorMessage">
+    <span>{{errorMessage}}</span>
+</div>
