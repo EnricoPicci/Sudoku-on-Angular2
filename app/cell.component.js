@@ -33,13 +33,26 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     if (lastKey >= 49 && lastKey < 59) {
                         this.cell.val = lastKey - 48;
                         inEvent.target.value = this.cell.val;
-                        console.log(lastKey - 48);
                         this.cell.valSetAsInput = true;
                     }
                     else {
                         //inEvent.target.value = '1';
                         inEvent.target.value = null;
                         this.cell.val = 0;
+                    }
+                };
+                CellComponent.prototype.setCellValOnChange = function (inEvent) {
+                    var cellVal = inEvent.target.valueAsNumber;
+                    if (cellVal >= 0 && cellVal < 10) {
+                        this.cell.val = cellVal;
+                        this.cell.valSetAsInput = true;
+                    }
+                    else {
+                        this.cell.val = 0;
+                        var thisCell = this.cell;
+                        setTimeout(function () {
+                            thisCell.valSetAsInput = false;
+                        }, 0);
                     }
                 };
                 CellComponent.prototype.showBottomBorder = function () {
@@ -59,7 +72,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     core_1.Component({
                         selector: 'cell-cmp',
                         providers: [],
-                        template: "\n        <div    [class.cellWithBottomBorder]=\"showBottomBorder()\" \n                [class.cellWithRightBorder]=\"showRightBorder()\">\n            <input type=\"number\" min=\"1\" max=\"9\" maxlength=\"1\" class=\"cellClass\"\n                [class.inconsistent]=\"isInconsistent()\"\n                [class.hasNoAllowedValues]=\"cell.hasNoAllowedValues\"\n                [class.setAsInput]=\"cell.valSetAsInput\"\n                [value]=\"getCellVal()\" (keyup)=\"setCellVal($event)\">\n        </div>\n    ",
+                        template: "\n        <div    [class.cellWithBottomBorder]=\"showBottomBorder()\" \n                [class.cellWithRightBorder]=\"showRightBorder()\">\n            <input type=\"number\" min=\"1\" max=\"9\" maxlength=\"1\" class=\"cellClass\"\n                [class.inconsistent]=\"isInconsistent()\"\n                [class.hasNoAllowedValues]=\"cell.hasNoAllowedValues\"\n                [class.setAsInput]=\"cell.valSetAsInput\"\n                [value]=\"getCellVal()\" (keyup)=\"setCellVal($event)\" (change)=\"setCellValOnChange($event)\">\n        </div>\n    ",
                         styleUrls: ['../styles/sudoku.css'],
                         directives: [],
                         inputs: ['cell']

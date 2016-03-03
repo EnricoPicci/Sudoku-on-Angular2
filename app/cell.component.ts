@@ -12,7 +12,7 @@ import {Cell} from '../model/cell'
                 [class.inconsistent]="isInconsistent()"
                 [class.hasNoAllowedValues]="cell.hasNoAllowedValues"
                 [class.setAsInput]="cell.valSetAsInput"
-                [value]="getCellVal()" (keyup)="setCellVal($event)">
+                [value]="getCellVal()" (keyup)="setCellVal($event)" (change)="setCellValOnChange($event)">
         </div>
     `,
     styleUrls: ['../styles/sudoku.css'],
@@ -35,12 +35,25 @@ export class CellComponent {
         if (lastKey >= 49 && lastKey < 59) {
             this.cell.val = lastKey - 48;
             inEvent.target.value = this.cell.val;
-            console.log(lastKey - 48);
             this.cell.valSetAsInput = true;
         } else {
             //inEvent.target.value = '1';
             inEvent.target.value = null;
             this.cell.val = 0;
+        }
+    }
+    
+    setCellValOnChange(inEvent) {
+        let cellVal = inEvent.target.valueAsNumber;
+        if (cellVal >= 0 && cellVal < 10) {
+            this.cell.val = cellVal;
+            this.cell.valSetAsInput = true;
+        } else {
+            this.cell.val = 0;
+            var thisCell = this.cell;
+            setTimeout(function() {
+             thisCell.valSetAsInput = false;
+            }, 0);
         }
     }
     
