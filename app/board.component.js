@@ -36,23 +36,37 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
             BoardComponent = (function () {
                 function BoardComponent(_smartPlayer) {
                     this._smartPlayer = _smartPlayer;
+                    this.enableTryAnotherSolutionButton = false;
                     this.board = new board_1.Board();
                 }
                 ;
                 BoardComponent.prototype.solve = function () {
+                    this.errorMessage = null;
                     try {
                         this._smartPlayer.solve(this.board);
                     }
                     catch (ex) {
-                        if (ex instanceof inconsistency_1.Inconsistency) {
-                            this.errorMessage = 'This Sudoku does not respect the rules of the game. Check and correct.';
-                        }
-                        else if (ex instanceof contraddiction_1.Contraddiction) {
-                            this.errorMessage = 'Some cells have no allowed values.';
-                        }
-                        else {
-                            this.errorMessage = 'An unexpected error has occurred. Insult the programmer.';
-                        }
+                        this.handleError(ex);
+                    }
+                };
+                BoardComponent.prototype.tryAnotherSolution = function () {
+                    try {
+                        this._smartPlayer.tryAnotherSolution(this.board);
+                    }
+                    catch (ex) {
+                        this.handleError(ex);
+                    }
+                };
+                BoardComponent.prototype.handleError = function (inError) {
+                    this.resetInput();
+                    if (inError instanceof inconsistency_1.Inconsistency) {
+                        this.errorMessage = 'This Sudoku does not respect the rules of the game. Check and correct.';
+                    }
+                    else if (inError instanceof contraddiction_1.Contraddiction) {
+                        this.errorMessage = 'Some cells have no allowed values.';
+                    }
+                    else {
+                        this.errorMessage = 'An unexpected error has occurred (' + inError.message + '). Insult the programmer.';
                     }
                 };
                 BoardComponent.prototype.resetInput = function () {
@@ -64,7 +78,6 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                             }
                         }
                     }
-                    this.board = new board_1.Board();
                 };
                 BoardComponent.prototype.resetBoard = function () {
                     this.errorMessage = null;

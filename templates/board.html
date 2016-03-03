@@ -12,6 +12,7 @@
 <div class="consoleClass">
     <button id="solveButton" class="basicButton" type="button" (click)="solve()">solve</button>
     <button id="resetButton" class="basicButton" type="button" (click)="resetBoard()">reset</button>
+    <button id="tryAnotherSolutionButton" class="basicButton" type="button" (click)="tryAnotherSolution()">try another</button>
 </div>
 <div class="errorMessageClass sudokuAlert sudokuAlert-danger" [hidden]="!errorMessage">
     <span>{{errorMessage}}</span>

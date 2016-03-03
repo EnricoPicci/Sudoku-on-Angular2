@@ -34,6 +34,11 @@
 .hasNoAllowedValues {
     background-color: darkred;
 }
+.setAsInput {
+    background-color: gray;
+    color: white;
+    font-weight: bold;
+}
 
 .sudokuAlert {
   padding: 15px;

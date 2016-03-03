@@ -19,22 +19,38 @@ export class BoardComponent {
     public board: Board;
     public errorMessage: string;
     
+    enableTryAnotherSolutionButton = false;
+    
     constructor(private _smartPlayer: Player) {
         this.board = new Board()
     };
     
     solve() {
+        this.errorMessage = null;
         try {
             this._smartPlayer.solve(this.board);
         } catch(ex) {
-            if (ex instanceof Inconsistency) {
-                this.errorMessage = 'This Sudoku does not respect the rules of the game. Check and correct.'
-                
-            } else if(ex instanceof Contraddiction) {
-                this.errorMessage = 'Some cells have no allowed values.'
-            } else {
-                this.errorMessage = 'An unexpected error has occurred. Insult the programmer.'
-            }
+            this.handleError(ex);
+        }
+    }
+    
+    tryAnotherSolution() {
+        try {
+            this._smartPlayer.tryAnotherSolution(this.board);
+        } catch(ex) {
+            this.handleError(ex);
+        }
+    }
+    
+    private handleError(inError) {
+        this.resetInput();
+        if (inError instanceof Inconsistency) {
+            this.errorMessage = 'This Sudoku does not respect the rules of the game. Check and correct.'
+            
+        } else if(inError instanceof Contraddiction) {
+            this.errorMessage = 'Some cells have no allowed values.'
+        } else {
+            this.errorMessage = 'An unexpected error has occurred ('+inError.message+'). Insult the programmer.'
         }
     }
     
@@ -47,7 +63,6 @@ export class BoardComponent {
                 }
             }
         }
-        this.board = new Board();
     }
     
     resetBoard() {

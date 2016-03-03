@@ -11,7 +11,8 @@ import {Cell} from '../model/cell'
             <input type="number" min="1" max="9" maxlength="1" class="cellClass"
                 [class.inconsistent]="isInconsistent()"
                 [class.hasNoAllowedValues]="cell.hasNoAllowedValues"
-                [value]="getCellVal()" (change)="setCellVal($event)">
+                [class.setAsInput]="cell.valSetAsInput"
+                [value]="getCellVal()" (keyup)="setCellVal($event)">
         </div>
     `,
     styleUrls: ['../styles/sudoku.css'],
@@ -22,16 +23,25 @@ export class CellComponent {
     public cell: Cell;
     
     getCellVal() {
-        let cellVal = '';
+        let cellVal;
         if (this.cell.val > 0) {
-            cellVal = this.cell.val.toString();
+            cellVal = this.cell.val;
         }
         return cellVal;
     }
     
     setCellVal(inEvent) {
-        this.cell.valSetAsInput = true; 
-        this.cell.val = inEvent.srcElement.value;
+        let lastKey = inEvent.keyCode;
+        if (lastKey >= 49 && lastKey < 59) {
+            this.cell.val = lastKey - 48;
+            inEvent.target.value = this.cell.val;
+            console.log(lastKey - 48);
+            this.cell.valSetAsInput = true;
+        } else {
+            //inEvent.target.value = '1';
+            inEvent.target.value = null;
+            this.cell.val = 0;
+        }
     }
     
     showBottomBorder() {

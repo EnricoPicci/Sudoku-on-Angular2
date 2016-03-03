@@ -22,15 +22,25 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 function CellComponent() {
                 }
                 CellComponent.prototype.getCellVal = function () {
-                    var cellVal = '';
+                    var cellVal;
                     if (this.cell.val > 0) {
-                        cellVal = this.cell.val.toString();
+                        cellVal = this.cell.val;
                     }
                     return cellVal;
                 };
                 CellComponent.prototype.setCellVal = function (inEvent) {
-                    this.cell.valSetAsInput = true;
-                    this.cell.val = inEvent.srcElement.value;
+                    var lastKey = inEvent.keyCode;
+                    if (lastKey >= 49 && lastKey < 59) {
+                        this.cell.val = lastKey - 48;
+                        inEvent.target.value = this.cell.val;
+                        console.log(lastKey - 48);
+                        this.cell.valSetAsInput = true;
+                    }
+                    else {
+                        //inEvent.target.value = '1';
+                        inEvent.target.value = null;
+                        this.cell.val = 0;
+                    }
                 };
                 CellComponent.prototype.showBottomBorder = function () {
                     // the third and the sixth row need to have the bottom border drawn in order to show the inner boxes of the board
@@ -49,7 +59,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     core_1.Component({
                         selector: 'cell-cmp',
                         providers: [],
-                        template: "\n        <div    [class.cellWithBottomBorder]=\"showBottomBorder()\" \n                [class.cellWithRightBorder]=\"showRightBorder()\">\n            <input type=\"number\" min=\"1\" max=\"9\" maxlength=\"1\" class=\"cellClass\"\n                [class.inconsistent]=\"isInconsistent()\"\n                [class.hasNoAllowedValues]=\"cell.hasNoAllowedValues\"\n                [value]=\"getCellVal()\" (change)=\"setCellVal($event)\">\n        </div>\n    ",
+                        template: "\n        <div    [class.cellWithBottomBorder]=\"showBottomBorder()\" \n                [class.cellWithRightBorder]=\"showRightBorder()\">\n            <input type=\"number\" min=\"1\" max=\"9\" maxlength=\"1\" class=\"cellClass\"\n                [class.inconsistent]=\"isInconsistent()\"\n                [class.hasNoAllowedValues]=\"cell.hasNoAllowedValues\"\n                [class.setAsInput]=\"cell.valSetAsInput\"\n                [value]=\"getCellVal()\" (keyup)=\"setCellVal($event)\">\n        </div>\n    ",
                         styleUrls: ['../styles/sudoku.css'],
                         directives: [],
                         inputs: ['cell']
