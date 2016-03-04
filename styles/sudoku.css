@@ -34,12 +34,14 @@
 .hasNoAllowedValues {
     background-color: darkred;
 }
-.setAsInput {
+.cellClass.setAsInput {
     background-color: gray;
     color: white;
     font-weight: bold;
 }
-
+.cellClass.setAsInput.disabled {
+    padding-left: 4;
+}
 .sudokuAlert {
   padding: 15px;
   margin-bottom: 20px;

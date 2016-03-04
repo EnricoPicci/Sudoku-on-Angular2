@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, Output, EventEmitter} from 'angular2/core';
 
 import {Cell} from '../model/cell'
 
@@ -8,11 +8,13 @@ import {Cell} from '../model/cell'
     template: `
         <div    [class.cellWithBottomBorder]="showBottomBorder()" 
                 [class.cellWithRightBorder]="showRightBorder()">
-            <input type="number" min="1" max="9" maxlength="1" class="cellClass"
+            <input type="number" min="1" max="9" pattern="[1-9]" inputmode="numeric" class="cellClass"
                 [class.inconsistent]="isInconsistent()"
                 [class.hasNoAllowedValues]="cell.hasNoAllowedValues"
                 [class.setAsInput]="cell.valSetAsInput"
-                [value]="getCellVal()" (keyup)="setCellVal($event)" (change)="setCellValOnChange($event)">
+                [class.disabled]="cell.disabled"
+                [value]="getCellVal()" [disabled]="cell.disabled"
+                (keyup)="setCellVal($event)" (change)="setCellValOnChange($event)">
         </div>
     `,
     styleUrls: ['../styles/sudoku.css'],
@@ -21,6 +23,7 @@ import {Cell} from '../model/cell'
 })
 export class CellComponent {
     public cell: Cell;
+    @Output() cellValChanged: EventEmitter<any> = new EventEmitter();
     
     getCellVal() {
         let cellVal;
@@ -32,12 +35,14 @@ export class CellComponent {
     
     setCellVal(inEvent) {
         let lastKey = inEvent.keyCode;
+        // try to understand is a numeric key has been hit and which one
         if (lastKey >= 49 && lastKey < 59) {
-            this.cell.val = lastKey - 48;
+            /*this.cell.val = lastKey - 48;
             inEvent.target.value = this.cell.val;
             this.cell.valSetAsInput = true;
+            this.cellValChanged.next(this);*/
+            this.primSetCellVal(lastKey - 48);
         } else {
-            //inEvent.target.value = '1';
             inEvent.target.value = null;
             this.cell.val = 0;
         }
@@ -46,15 +51,23 @@ export class CellComponent {
     setCellValOnChange(inEvent) {
         let cellVal = inEvent.target.valueAsNumber;
         if (cellVal >= 0 && cellVal < 10) {
-            this.cell.val = cellVal;
+            /*this.cell.val = cellVal;
             this.cell.valSetAsInput = true;
+            this.cellValChanged.next(this);*/
+            this.primSetCellVal(cellVal);
         } else {
             this.cell.val = 0;
             var thisCell = this.cell;
             setTimeout(function() {
-             thisCell.valSetAsInput = false;
+                thisCell.setSetAsInput(false);
             }, 0);
         }
+    }
+    
+    private primSetCellVal(inCellVal: number) {
+        this.cell.val = inCellVal;
+        this.cell.setSetAsInput(true);
+        this.cellValChanged.next(this.cell);
     }
     
     showBottomBorder() {

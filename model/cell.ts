@@ -1,19 +1,23 @@
+import {Board} from './board';
 import {RowColumnSet} from './rowColumnSet';
 import {Contraddiction} from './contraddiction'
 import {Decision} from './decision'
 
 export class Cell {
     val = 0;
+    board: Board;
     row: RowColumnSet;
     column: RowColumnSet;
     squareSet: RowColumnSet;
     allowedValues: Array<number>;
     
     hasNoAllowedValue = false;
-    valSetAsInput = false;
+    private valSetAsInput = false;
+    disabled = false;
 
-    constructor(_row: RowColumnSet, _column: RowColumnSet, _squareSet: RowColumnSet)
+    constructor(_board: Board, _row: RowColumnSet, _column: RowColumnSet, _squareSet: RowColumnSet)
     {
+        this.board = _board;
         this.row = _row;
         this.column = _column;
         this.squareSet = _squareSet;
@@ -73,6 +77,13 @@ export class Cell {
     {
         this.val = 0;
     }
+    
+    public getSetAsInput() {
+        return this.valSetAsInput;
+    }
+    public setSetAsInput(inBool: boolean) {
+        this.valSetAsInput = inBool;
+    }
 
     public toString()
     {
@@ -85,6 +96,10 @@ export class Cell {
         if (this.val > 0)
             resp = this.val.toString();
         return resp;
-    }    
+    }
+    
+    public getBoard() {
+        return this.board;
+    }
     
 }

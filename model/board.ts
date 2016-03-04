@@ -30,7 +30,7 @@ export class Board {
                 let column = this.columns[j];
                 let squareSetIndex = this.getSquareSetIndex(i,j);
                 let squareSet = this.squareSets[squareSetIndex];
-                let cell = new Cell(row, column, squareSet);
+                let cell = new Cell(this, row, column, squareSet);
                 this.cells[i][j] = cell;
             }
         }

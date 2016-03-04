@@ -10,10 +10,12 @@ System.register(['./contraddiction'], function(exports_1, context_1) {
             }],
         execute: function() {
             Cell = (function () {
-                function Cell(_row, _column, _squareSet) {
+                function Cell(_board, _row, _column, _squareSet) {
                     this.val = 0;
                     this.hasNoAllowedValue = false;
                     this.valSetAsInput = false;
+                    this.disabled = false;
+                    this.board = _board;
                     this.row = _row;
                     this.column = _column;
                     this.squareSet = _squareSet;
@@ -61,6 +63,12 @@ System.register(['./contraddiction'], function(exports_1, context_1) {
                 Cell.prototype.resetVal = function () {
                     this.val = 0;
                 };
+                Cell.prototype.getSetAsInput = function () {
+                    return this.valSetAsInput;
+                };
+                Cell.prototype.setSetAsInput = function (inBool) {
+                    this.valSetAsInput = inBool;
+                };
                 Cell.prototype.toString = function () {
                     return this.row.index + "," + this.column.index + ", " + this.val;
                 };
@@ -69,6 +77,9 @@ System.register(['./contraddiction'], function(exports_1, context_1) {
                     if (this.val > 0)
                         resp = this.val.toString();
                     return resp;
+                };
+                Cell.prototype.getBoard = function () {
+                    return this.board;
                 };
                 return Cell;
             }());

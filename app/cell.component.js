@@ -20,6 +20,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
         execute: function() {
             CellComponent = (function () {
                 function CellComponent() {
+                    this.cellValChanged = new core_1.EventEmitter();
                 }
                 CellComponent.prototype.getCellVal = function () {
                     var cellVal;
@@ -30,13 +31,15 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 };
                 CellComponent.prototype.setCellVal = function (inEvent) {
                     var lastKey = inEvent.keyCode;
+                    // try to understand is a numeric key has been hit and which one
                     if (lastKey >= 49 && lastKey < 59) {
-                        this.cell.val = lastKey - 48;
+                        /*this.cell.val = lastKey - 48;
                         inEvent.target.value = this.cell.val;
                         this.cell.valSetAsInput = true;
+                        this.cellValChanged.next(this);*/
+                        this.primSetCellVal(lastKey - 48);
                     }
                     else {
-                        //inEvent.target.value = '1';
                         inEvent.target.value = null;
                         this.cell.val = 0;
                     }
@@ -44,16 +47,23 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 CellComponent.prototype.setCellValOnChange = function (inEvent) {
                     var cellVal = inEvent.target.valueAsNumber;
                     if (cellVal >= 0 && cellVal < 10) {
-                        this.cell.val = cellVal;
+                        /*this.cell.val = cellVal;
                         this.cell.valSetAsInput = true;
+                        this.cellValChanged.next(this);*/
+                        this.primSetCellVal(cellVal);
                     }
                     else {
                         this.cell.val = 0;
                         var thisCell = this.cell;
                         setTimeout(function () {
-                            thisCell.valSetAsInput = false;
+                            thisCell.setSetAsInput(false);
                         }, 0);
                     }
+                };
+                CellComponent.prototype.primSetCellVal = function (inCellVal) {
+                    this.cell.val = inCellVal;
+                    this.cell.setSetAsInput(true);
+                    this.cellValChanged.next(this.cell);
                 };
                 CellComponent.prototype.showBottomBorder = function () {
                     // the third and the sixth row need to have the bottom border drawn in order to show the inner boxes of the board
@@ -68,11 +78,15 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 CellComponent.prototype.isInconsistent = function () {
                     return this.cell.row.isInconsistent || this.cell.column.isInconsistent || this.cell.squareSet.isInconsistent;
                 };
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', core_1.EventEmitter)
+                ], CellComponent.prototype, "cellValChanged", void 0);
                 CellComponent = __decorate([
                     core_1.Component({
                         selector: 'cell-cmp',
                         providers: [],
-                        template: "\n        <div    [class.cellWithBottomBorder]=\"showBottomBorder()\" \n                [class.cellWithRightBorder]=\"showRightBorder()\">\n            <input type=\"number\" min=\"1\" max=\"9\" maxlength=\"1\" class=\"cellClass\"\n                [class.inconsistent]=\"isInconsistent()\"\n                [class.hasNoAllowedValues]=\"cell.hasNoAllowedValues\"\n                [class.setAsInput]=\"cell.valSetAsInput\"\n                [value]=\"getCellVal()\" (keyup)=\"setCellVal($event)\" (change)=\"setCellValOnChange($event)\">\n        </div>\n    ",
+                        template: "\n        <div    [class.cellWithBottomBorder]=\"showBottomBorder()\" \n                [class.cellWithRightBorder]=\"showRightBorder()\">\n            <input type=\"number\" min=\"1\" max=\"9\" pattern=\"[1-9]\" inputmode=\"numeric\" class=\"cellClass\"\n                [class.inconsistent]=\"isInconsistent()\"\n                [class.hasNoAllowedValues]=\"cell.hasNoAllowedValues\"\n                [class.setAsInput]=\"cell.valSetAsInput\"\n                [class.disabled]=\"cell.disabled\"\n                [value]=\"getCellVal()\" [disabled]=\"cell.disabled\"\n                (keyup)=\"setCellVal($event)\" (change)=\"setCellValOnChange($event)\">\n        </div>\n    ",
                         styleUrls: ['../styles/sudoku.css'],
                         directives: [],
                         inputs: ['cell']

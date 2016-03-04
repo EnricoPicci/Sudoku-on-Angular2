@@ -1,9 +1,10 @@
 <div class="boardClass">
+    <span>{{getTitleMessage()}}</span>
     <table>
         <tbody>
             <tr *ngFor="#rowOfCells of board.rows">
                 <td *ngFor="#cellInRow of rowOfCells.cells">
-                    <cell-cmp [cell]="cellInRow"></cell-cmp>
+                    <cell-cmp [cell]="cellInRow" (cellValChanged)="cellValChanged($event)"></cell-cmp>
                 </td>
             </tr>
         </tbody>
@@ -11,8 +12,11 @@
 </div>
 <div class="consoleClass">
     <button id="solveButton" class="basicButton" type="button" (click)="solve()">solve</button>
+    <button id="playButton" class="basicButton" type="button" (click)="setPlayMode()"
+        [disabled]="!enablePlayButton">play</button>
     <button id="resetButton" class="basicButton" type="button" (click)="resetBoard()">reset</button>
-    <button id="tryAnotherSolutionButton" class="basicButton" type="button" (click)="tryAnotherSolution()">try another</button>
+    <button id="tryAnotherSolutionButton" class="basicButton" type="button" 
+        (click)="tryAnotherSolution()" [disabled]="!enableTryAnotherSolutionButton">try another</button>
 </div>
 <div class="errorMessageClass sudokuAlert sudokuAlert-danger" [hidden]="!errorMessage">
     <span>{{errorMessage}}</span>

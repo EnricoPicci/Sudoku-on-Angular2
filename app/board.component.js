@@ -37,13 +37,15 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                 function BoardComponent(_smartPlayer) {
                     this._smartPlayer = _smartPlayer;
                     this.enableTryAnotherSolutionButton = false;
-                    this.board = new board_1.Board();
+                    this.enablePlayButton = true;
+                    this.resetBoard();
                 }
                 ;
                 BoardComponent.prototype.solve = function () {
                     this.errorMessage = null;
                     try {
                         this._smartPlayer.solve(this.board);
+                        this.enableTryAnotherSolutionButton = true;
                     }
                     catch (ex) {
                         this.handleError(ex);
@@ -57,8 +59,24 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                         this.handleError(ex);
                     }
                 };
+                BoardComponent.prototype.cellValChanged = function (inCell) {
+                    this.errorMessage = null;
+                    this.enablePlayButton = true;
+                    if (!this.isDrawMode()) {
+                        inCell.setSetAsInput(false);
+                    }
+                    try {
+                        this._smartPlayer.checkConsistency(this.board);
+                    }
+                    catch (ex) {
+                        this.handleError(ex);
+                    }
+                };
                 BoardComponent.prototype.handleError = function (inError) {
-                    this.resetInput();
+                    if (this.isDrawMode()) {
+                        this.resetInput();
+                    }
+                    this.enablePlayButton = false;
                     if (inError instanceof inconsistency_1.Inconsistency) {
                         this.errorMessage = 'This Sudoku does not respect the rules of the game. Check and correct.';
                     }
@@ -73,7 +91,7 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                     for (var i = 0; i < this.board.rows.length; i++) {
                         for (var j = 0; j < this.board.columns.length; j++) {
                             var thisCell = this.board.cells[i][j];
-                            if (!thisCell.valSetAsInput) {
+                            if (!thisCell.getSetAsInput()) {
                                 thisCell.resetVal();
                             }
                         }
@@ -82,6 +100,37 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                 BoardComponent.prototype.resetBoard = function () {
                     this.errorMessage = null;
                     this.board = new board_1.Board();
+                    this.setDrawMode();
+                };
+                BoardComponent.prototype.setPlayMode = function () {
+                    this.mode = 'play';
+                    for (var i = 0; i < this.board.rows.length; i++) {
+                        for (var j = 0; j < this.board.columns.length; j++) {
+                            var thisCell = this.board.cells[i][j];
+                            if (thisCell.getSetAsInput()) {
+                                thisCell.disabled = true;
+                            }
+                        }
+                    }
+                };
+                BoardComponent.prototype.isPlayMode = function () {
+                    return this.mode == 'play';
+                };
+                BoardComponent.prototype.setDrawMode = function () {
+                    this.mode = 'draw';
+                };
+                BoardComponent.prototype.isDrawMode = function () {
+                    return this.mode == 'draw';
+                };
+                BoardComponent.prototype.getTitleMessage = function () {
+                    var message;
+                    if (this.isDrawMode()) {
+                        message = 'Draw your Sudoku';
+                    }
+                    else if (this.isPlayMode()) {
+                        message = 'Play this thing';
+                    }
+                    return message;
                 };
                 BoardComponent = __decorate([
                     core_1.Component({

@@ -33,7 +33,7 @@ System.register(['./cell', './rowColumnSet'], function(exports_1, context_1) {
                             var column = this.columns[j];
                             var squareSetIndex = this.getSquareSetIndex(i, j);
                             var squareSet = this.squareSets[squareSetIndex];
-                            var cell = new cell_1.Cell(row, column, squareSet);
+                            var cell = new cell_1.Cell(this, row, column, squareSet);
                             this.cells[i][j] = cell;
                         }
                     }
