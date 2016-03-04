@@ -12,9 +12,16 @@
     width: 60%;
 }
 .cellClass {
-    width: 20;
-    height: 20;
+    width: 30;
+    height: 30;
     padding-left: 4;
+}
+@media (max-width : 320px) {
+.cellClass {
+    width: 30;
+    height: 30;
+    padding-left: 4;
+}
 }
 .cellWithBottomBorder {
     border-bottom-color: lightsteelblue;
@@ -35,7 +42,7 @@
     background-color: darkred;
 }
 .cellClass.setAsInput {
-    background-color: gray;
+    background-color: darkgray;
     color: white;
     font-weight: bold;
 }
