@@ -8,7 +8,8 @@ import {Cell} from '../model/cell'
     template: `
         <div    [class.cellWithBottomBorder]="showBottomBorder()" 
                 [class.cellWithRightBorder]="showRightBorder()">
-            <input type="number" min="1" max="9" pattern="[1-9]*" inputmode="numeric" class="cellClass"
+            <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" 
+                class="cellClass"
                 [class.inconsistent]="isInconsistent()"
                 [class.hasNoAllowedValues]="cell.hasNoAllowedValues"
                 [class.setAsInput]="cell.valSetAsInput"
