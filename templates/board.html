@@ -11,7 +11,8 @@
     </table>
 </div>
 <div class="consoleClass">
-    <button id="solveButton" class="basicButton" type="button" (click)="solve()">solve</button>
+    <button id="solveButton" class="basicButton" type="button" (click)="solve()"
+        [disabled]="!enableSolveButton">solve</button>
     <button id="playButton" class="basicButton" type="button" (click)="setPlayMode()"
         [disabled]="!enablePlayButton">play</button>
     <button id="resetButton" class="basicButton" type="button" (click)="resetBoard()">reset</button>

@@ -37,6 +37,7 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                 function BoardComponent(_smartPlayer) {
                     this._smartPlayer = _smartPlayer;
                     this.enableTryAnotherSolutionButton = false;
+                    this.enableSolveButton = true;
                     this.enablePlayButton = true;
                     this.resetBoard();
                 }
@@ -45,7 +46,7 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                     this.errorMessage = null;
                     try {
                         this._smartPlayer.solve(this.board);
-                        this.enableTryAnotherSolutionButton = true;
+                        this.setFinishedMode();
                     }
                     catch (ex) {
                         this.handleError(ex);
@@ -60,6 +61,9 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                     }
                 };
                 BoardComponent.prototype.cellValChanged = function (inCell) {
+                    if (this.isDrawMode()) {
+                        this.enablePlayButton = false;
+                    }
                     this.errorMessage = null;
                     this.enablePlayButton = true;
                     if (!this.isDrawMode()) {
@@ -75,8 +79,8 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                 BoardComponent.prototype.handleError = function (inError) {
                     if (this.isDrawMode()) {
                         this.resetInput();
+                        this.enablePlayButton = false;
                     }
-                    this.enablePlayButton = false;
                     if (inError instanceof inconsistency_1.Inconsistency) {
                         this.errorMessage = 'This Sudoku does not respect the rules of the game. Check and correct.';
                     }
@@ -103,6 +107,7 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                     this.setDrawMode();
                 };
                 BoardComponent.prototype.setPlayMode = function () {
+                    this.enablePlayButton = false;
                     this.mode = 'play';
                     for (var i = 0; i < this.board.rows.length; i++) {
                         for (var j = 0; j < this.board.columns.length; j++) {
@@ -117,10 +122,22 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                     return this.mode == 'play';
                 };
                 BoardComponent.prototype.setDrawMode = function () {
+                    this.enableSolveButton = true;
+                    this.enablePlayButton = true;
+                    this.enableTryAnotherSolutionButton = false;
                     this.mode = 'draw';
                 };
                 BoardComponent.prototype.isDrawMode = function () {
                     return this.mode == 'draw';
+                };
+                BoardComponent.prototype.setFinishedMode = function () {
+                    this.enablePlayButton = false;
+                    this.enableSolveButton = false;
+                    this.enableTryAnotherSolutionButton = true;
+                    this.mode = 'finished';
+                };
+                BoardComponent.prototype.isFinishedMode = function () {
+                    return this.mode == 'finished';
                 };
                 BoardComponent.prototype.getTitleMessage = function () {
                     var message;
@@ -129,6 +146,9 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                     }
                     else if (this.isPlayMode()) {
                         message = 'Play this thing';
+                    }
+                    else if (this.isFinishedMode()) {
+                        message = 'Sudoku solved';
                     }
                     return message;
                 };

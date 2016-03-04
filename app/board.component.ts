@@ -21,6 +21,7 @@ export class BoardComponent {
     public errorMessage: string;
     
     public enableTryAnotherSolutionButton = false;
+    public enableSolveButton = true;
     public enablePlayButton = true;
     
     public mode;
@@ -33,7 +34,7 @@ export class BoardComponent {
         this.errorMessage = null;
         try {
             this._smartPlayer.solve(this.board);
-            this.enableTryAnotherSolutionButton = true;
+            this.setFinishedMode();
         } catch(ex) {
             this.handleError(ex);
         }
@@ -48,15 +49,13 @@ export class BoardComponent {
     }
     
     cellValChanged(inCell: Cell) {
+        if (this.isDrawMode()) {
+            this.enablePlayButton = false;
+        }
         this.errorMessage = null;
         this.enablePlayButton = true;
         if (!this.isDrawMode()) {
             inCell.setSetAsInput(false);
-            /*var thisCell = inCell;
-            setTimeout(function() {
-                console.log('ddd');
-                thisCell.setSetAsInput(false);
-            }, 0);*/
         }
         try {
             this._smartPlayer.checkConsistency(this.board);
@@ -68,8 +67,8 @@ export class BoardComponent {
     private handleError(inError) {
         if (this.isDrawMode()) {
             this.resetInput();
+            this.enablePlayButton = false;
         }
-        this.enablePlayButton = false;
         if (inError instanceof Inconsistency) {
             this.errorMessage = 'This Sudoku does not respect the rules of the game. Check and correct.'
         } else if(inError instanceof Contraddiction) {
@@ -97,6 +96,7 @@ export class BoardComponent {
     }
     
     setPlayMode() {
+        this.enablePlayButton = false;
         this.mode = 'play';
         for (var i = 0; i < this.board.rows.length; i++) {
             for (var j = 0; j < this.board.columns.length; j++) {
@@ -111,10 +111,22 @@ export class BoardComponent {
         return this.mode == 'play';
     }
     setDrawMode() {
+        this.enableSolveButton = true;
+        this.enablePlayButton = true;
+        this.enableTryAnotherSolutionButton = false;
         this.mode = 'draw';
     }
     isDrawMode() {
         return this.mode == 'draw';
+    }
+    setFinishedMode() {
+        this.enablePlayButton = false;
+        this.enableSolveButton = false;
+        this.enableTryAnotherSolutionButton = true;
+        this.mode = 'finished';
+    }
+    isFinishedMode() {
+        return this.mode == 'finished';
     }
     
     getTitleMessage() {
@@ -123,6 +135,8 @@ export class BoardComponent {
             message = 'Draw your Sudoku';
         } else if (this.isPlayMode()) {
             message = 'Play this thing';
+        } else if (this.isFinishedMode()) {
+            message = 'Sudoku solved';
         }
         return message;
     }

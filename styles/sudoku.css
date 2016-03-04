@@ -44,8 +44,8 @@
     background-color: darkred;
 }
 .cellClass.setAsInput {
-    background-color: darkgray;
-    color: white;
+    background-color: lightgray;
+    color: darkblue;
     font-weight: bold;
 }
 .cellClass.setAsInput.disabled {
