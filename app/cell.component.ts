@@ -8,7 +8,7 @@ import {Cell} from '../model/cell'
     template: `
         <div    [class.cellWithBottomBorder]="showBottomBorder()" 
                 [class.cellWithRightBorder]="showRightBorder()">
-            <input type="number" min="1" max="9" pattern="[1-9]" inputmode="numeric" class="cellClass"
+            <input type="number" min="1" max="9" pattern="[1-9]" class="cellClass"
                 [class.inconsistent]="isInconsistent()"
                 [class.hasNoAllowedValues]="cell.hasNoAllowedValues"
                 [class.setAsInput]="cell.valSetAsInput"
