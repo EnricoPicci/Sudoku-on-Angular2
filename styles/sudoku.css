@@ -16,7 +16,7 @@
     height: 30;
     padding-left: 4;
 }
-@media (max-width : 320px) {
+@media (max-width : 400px) {
 .cellClass {
     width: 30;
     height: 30;
