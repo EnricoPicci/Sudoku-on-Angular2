@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, ViewChild} from 'angular2/core';
 
 import {Board} from '../model/board';
 import {Cell} from '../model/cell'
@@ -7,6 +7,7 @@ import {Inconsistency} from '../model/inconsistency';
 import {Contraddiction} from '../model/contraddiction';
 
 import {CellComponent} from './cell.component'
+import {SudokuRendererComponent} from './boardRenderer.component'
 
 @Component({
     selector: 'board-cmp',
@@ -14,9 +15,10 @@ import {CellComponent} from './cell.component'
     templateUrl: '../templates/board.html',
     styleUrls: ['../styles/sudoku.css'],
     inputs: ['board'],
-	directives: [CellComponent],
+	directives: [CellComponent, SudokuRendererComponent],
 })
 export class BoardComponent {
+    @ViewChild('renderer') renderer: SudokuRendererComponent;
     public board: Board;
     public errorMessage: string;
     
@@ -139,6 +141,15 @@ export class BoardComponent {
             message = 'Sudoku solved';
         }
         return message;
+    }
+    
+    imageSelected(inEvent) {
+        console.log(inEvent);
+        console.log(inEvent.value);
+        console.log(inEvent.target.value);
+        console.log(inEvent.target.files[0].name);
+        console.log(URL.createObjectURL(inEvent.target.files[0]));
+        this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]));
     }
 
 }

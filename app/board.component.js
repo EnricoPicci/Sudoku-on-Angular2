@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../model/board', '../model/player', '../model/inconsistency', '../model/contraddiction', './cell.component'], function(exports_1, context_1) {
+System.register(['angular2/core', '../model/board', '../model/player', '../model/inconsistency', '../model/contraddiction', './cell.component', './boardRenderer.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, board_1, player_1, inconsistency_1, contraddiction_1, cell_component_1;
+    var core_1, board_1, player_1, inconsistency_1, contraddiction_1, cell_component_1, boardRenderer_component_1;
     var BoardComponent;
     return {
         setters:[
@@ -31,6 +31,9 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
             },
             function (cell_component_1_1) {
                 cell_component_1 = cell_component_1_1;
+            },
+            function (boardRenderer_component_1_1) {
+                boardRenderer_component_1 = boardRenderer_component_1_1;
             }],
         execute: function() {
             BoardComponent = (function () {
@@ -152,6 +155,18 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                     }
                     return message;
                 };
+                BoardComponent.prototype.imageSelected = function (inEvent) {
+                    console.log(inEvent);
+                    console.log(inEvent.value);
+                    console.log(inEvent.target.value);
+                    console.log(inEvent.target.files[0].name);
+                    console.log(URL.createObjectURL(inEvent.target.files[0]));
+                    this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]));
+                };
+                __decorate([
+                    core_1.ViewChild('renderer'), 
+                    __metadata('design:type', boardRenderer_component_1.SudokuRendererComponent)
+                ], BoardComponent.prototype, "renderer", void 0);
                 BoardComponent = __decorate([
                     core_1.Component({
                         selector: 'board-cmp',
@@ -159,7 +174,7 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                         templateUrl: '../templates/board.html',
                         styleUrls: ['../styles/sudoku.css'],
                         inputs: ['board'],
-                        directives: [cell_component_1.CellComponent],
+                        directives: [cell_component_1.CellComponent, boardRenderer_component_1.SudokuRendererComponent],
                     }), 
                     __metadata('design:paramtypes', [player_1.Player])
                 ], BoardComponent);
