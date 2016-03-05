@@ -26,6 +26,8 @@ export class BoardComponent {
     public enableSolveButton = true;
     public enablePlayButton = true;
     
+    public selectedFiles;
+    
     public mode;
     
     constructor(private _smartPlayer: Player) {
@@ -44,7 +46,10 @@ export class BoardComponent {
     
     tryAnotherSolution() {
         try {
-            this._smartPlayer.tryAnotherSolution(this.board);
+            let iterations = this._smartPlayer.tryAnotherSolution(this.board);
+            if (iterations == 0) {
+                this.setNoOtherSolutionsAvailableMode();
+            }
         } catch(ex) {
             this.handleError(ex);
         }
@@ -95,6 +100,7 @@ export class BoardComponent {
         this.errorMessage = null;
         this.board = new Board();
         this.setDrawMode();
+        this.selectedFiles = null;
     }
     
     setPlayMode() {
@@ -130,6 +136,15 @@ export class BoardComponent {
     isFinishedMode() {
         return this.mode == 'finished';
     }
+    setNoOtherSolutionsAvailableMode() {
+        this.enablePlayButton = false;
+        this.enableSolveButton = false;
+        this.enableTryAnotherSolutionButton = false;
+        this.mode = 'noOtherSolutionsAvailableMode';
+    }
+    isNoOtherSolutionsAvailableMode() {
+        return this.mode == 'noOtherSolutionsAvailableMode';
+    }
     
     getTitleMessage() {
         let message;
@@ -138,7 +153,9 @@ export class BoardComponent {
         } else if (this.isPlayMode()) {
             message = 'Play this thing';
         } else if (this.isFinishedMode()) {
-            message = 'Sudoku solved';
+            message = 'Good job!!!! Sudoku solved';
+        } else if (this.isNoOtherSolutionsAvailableMode()) {
+            message = 'No other solution is possible';
         }
         return message;
     }
@@ -149,23 +166,27 @@ export class BoardComponent {
         console.log(inEvent.target.value);
         console.log(inEvent.target.files[0].name);
         console.log(URL.createObjectURL(inEvent.target.files[0]));
-        var theBoard = this.board;
-        this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), processRenderedInfo, theBoard);
+        //var theBoard = this.board;
+        var theBoardComponent = this;
+        this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), processRenderedInfo, theBoardComponent);
     }
 
 }
 
     
-    function processRenderedInfo(inDigits: any, inBoard: any) {
+    function processRenderedInfo(inDigits: any) {
         console.log('digits -- ' + inDigits);
-        //let renderedDigitIndex = 0;
-        for (var i = 0; i < this.board.rows.length; i++) {
-            let thisRow = this.board.rows[i];
-            for (var j = 0; j < thisRow.cells.length; j++) {
-                if (inDigits[i][j]) {
-                    thisRow.cells[j].val = inDigits[i][j];
+        if (inDigits) {
+            for (var i = 0; i < this.boardComponent.board.rows.length; i++) {
+                let thisRow = this.boardComponent.board.rows[i];
+                for (var j = 0; j < thisRow.cells.length; j++) {
+                    if (inDigits[i][j]) {
+                        thisRow.cells[j].val = inDigits[i][j];
+                        thisRow.cells[j].setSetAsInput(true);
+                    }
                 }
-                //renderedDigitIndex++;
             }
+        } else {
+            this.boardComponent.errorMessage = "Couldn't find a sudoku board in that image.";
         }
     }

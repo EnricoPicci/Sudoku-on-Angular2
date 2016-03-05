@@ -20,7 +20,7 @@
         (click)="tryAnotherSolution()" [disabled]="!enableTryAnotherSolutionButton">try another</button>
 </div>
 <div class="consoleClass">
-    <input id="selectImage" type="file" name="image" (change)="imageSelected($event)">
+    <input id="selectImage" type="file" name="image" [files]="selectedFiles" (change)="imageSelected($event)">
 </div>
 <div class="errorMessageClass sudokuAlert sudokuAlert-danger" [hidden]="!errorMessage">
     <span>{{errorMessage}}</span>

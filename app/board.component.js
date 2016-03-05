@@ -12,16 +12,21 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
     };
     var core_1, board_1, player_1, inconsistency_1, contraddiction_1, cell_component_1, boardRenderer_component_1;
     var BoardComponent;
-    function processRenderedInfo(inDigits, inBoard) {
+    function processRenderedInfo(inDigits) {
         console.log('digits -- ' + inDigits);
-        //let renderedDigitIndex = 0;
-        for (var i = 0; i < this.board.rows.length; i++) {
-            var thisRow = this.board.rows[i];
-            for (var j = 0; j < thisRow.cells.length; j++) {
-                if (inDigits[i][j]) {
-                    thisRow.cells[j].val = inDigits[i][j];
+        if (inDigits) {
+            for (var i = 0; i < this.boardComponent.board.rows.length; i++) {
+                var thisRow = this.boardComponent.board.rows[i];
+                for (var j = 0; j < thisRow.cells.length; j++) {
+                    if (inDigits[i][j]) {
+                        thisRow.cells[j].val = inDigits[i][j];
+                        thisRow.cells[j].setSetAsInput(true);
+                    }
                 }
             }
+        }
+        else {
+            this.boardComponent.errorMessage = "Couldn't find a sudoku board in that image.";
         }
     }
     return {
@@ -69,7 +74,10 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                 };
                 BoardComponent.prototype.tryAnotherSolution = function () {
                     try {
-                        this._smartPlayer.tryAnotherSolution(this.board);
+                        var iterations = this._smartPlayer.tryAnotherSolution(this.board);
+                        if (iterations == 0) {
+                            this.setNoOtherSolutionsAvailableMode();
+                        }
                     }
                     catch (ex) {
                         this.handleError(ex);
@@ -120,6 +128,7 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                     this.errorMessage = null;
                     this.board = new board_1.Board();
                     this.setDrawMode();
+                    this.selectedFiles = null;
                 };
                 BoardComponent.prototype.setPlayMode = function () {
                     this.enablePlayButton = false;
@@ -154,6 +163,15 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                 BoardComponent.prototype.isFinishedMode = function () {
                     return this.mode == 'finished';
                 };
+                BoardComponent.prototype.setNoOtherSolutionsAvailableMode = function () {
+                    this.enablePlayButton = false;
+                    this.enableSolveButton = false;
+                    this.enableTryAnotherSolutionButton = false;
+                    this.mode = 'noOtherSolutionsAvailableMode';
+                };
+                BoardComponent.prototype.isNoOtherSolutionsAvailableMode = function () {
+                    return this.mode == 'noOtherSolutionsAvailableMode';
+                };
                 BoardComponent.prototype.getTitleMessage = function () {
                     var message;
                     if (this.isDrawMode()) {
@@ -163,7 +181,10 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                         message = 'Play this thing';
                     }
                     else if (this.isFinishedMode()) {
-                        message = 'Sudoku solved';
+                        message = 'Good job!!!! Sudoku solved';
+                    }
+                    else if (this.isNoOtherSolutionsAvailableMode()) {
+                        message = 'No other solution is possible';
                     }
                     return message;
                 };
@@ -173,8 +194,9 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                     console.log(inEvent.target.value);
                     console.log(inEvent.target.files[0].name);
                     console.log(URL.createObjectURL(inEvent.target.files[0]));
-                    var theBoard = this.board;
-                    this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), processRenderedInfo, theBoard);
+                    //var theBoard = this.board;
+                    var theBoardComponent = this;
+                    this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), processRenderedInfo, theBoardComponent);
                 };
                 __decorate([
                     core_1.ViewChild('renderer'), 

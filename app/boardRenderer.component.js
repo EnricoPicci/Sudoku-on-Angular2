@@ -24,6 +24,10 @@ System.register(['angular2/core'], function(exports_1, context_1) {
             console.log("OCR-ed grid\n", digits.join('\n ')
                 .replace(/,/g, ' ')
                 .replace(/0/g, '.'));
+            /*var theCallback = this.digitsCallback;
+            setTimeout(function() {
+                theCallback(digits);
+            }, 0);*/
             this.digitsCallback(digits);
         }
         else {
@@ -126,10 +130,10 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     _sourceContext = _sourceCanvas.getContext("2d");
                     _normalizedContext = _normalizedCanvas.getContext("2d");
                 };
-                SudokuRendererComponent.prototype.renderBoardImage = function (inImageURL, inCallback, inBoard) {
+                SudokuRendererComponent.prototype.renderBoardImage = function (inImageURL, inCallback, inBoardComponent) {
                     //_sourceImage.onload = doSomeImageProcessing(inCallback);
                     _sourceImage.digitsCallback = inCallback;
-                    _sourceImage.board = inBoard;
+                    _sourceImage.boardComponent = inBoardComponent;
                     _sourceImage.onload = doSomeImageProcessing;
                     _sourceImage.src = inImageURL;
                     _sourceImage.setAttribute('class', 'loaded');

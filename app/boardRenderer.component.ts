@@ -42,10 +42,10 @@ export class SudokuRendererComponent {
         
     }
     
-    public renderBoardImage(inImageURL: string, inCallback: any, inBoard: any) {
+    public renderBoardImage(inImageURL: string, inCallback: any, inBoardComponent: any) {
         //_sourceImage.onload = doSomeImageProcessing(inCallback);
         _sourceImage.digitsCallback = inCallback;
-        _sourceImage.board = inBoard;
+        _sourceImage.boardComponent = inBoardComponent;
         _sourceImage.onload = doSomeImageProcessing;
         _sourceImage.src = inImageURL;
         _sourceImage.setAttribute('class', 'loaded');
@@ -68,6 +68,10 @@ export class SudokuRendererComponent {
             console.log("OCR-ed grid\n", digits.join('\n ')
                 .replace(/,/g, ' ')
                 .replace(/0/g, '.'));
+            /*var theCallback = this.digitsCallback;
+            setTimeout(function() {
+                theCallback(digits);
+            }, 0);*/
             this.digitsCallback(digits);
         } else {
             console.log("Couldn't find a sudoku board in that image..");
