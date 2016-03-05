@@ -149,7 +149,23 @@ export class BoardComponent {
         console.log(inEvent.target.value);
         console.log(inEvent.target.files[0].name);
         console.log(URL.createObjectURL(inEvent.target.files[0]));
-        this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]));
+        var theBoard = this.board;
+        this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), processRenderedInfo, theBoard);
     }
 
 }
+
+    
+    function processRenderedInfo(inDigits: any, inBoard: any) {
+        console.log('digits -- ' + inDigits);
+        //let renderedDigitIndex = 0;
+        for (var i = 0; i < this.board.rows.length; i++) {
+            let thisRow = this.board.rows[i];
+            for (var j = 0; j < thisRow.cells.length; j++) {
+                if (inDigits[i][j]) {
+                    thisRow.cells[j].val = inDigits[i][j];
+                }
+                //renderedDigitIndex++;
+            }
+        }
+    }

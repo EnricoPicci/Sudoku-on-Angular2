@@ -24,6 +24,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
             console.log("OCR-ed grid\n", digits.join('\n ')
                 .replace(/,/g, ' ')
                 .replace(/0/g, '.'));
+            this.digitsCallback(digits);
         }
         else {
             console.log("Couldn't find a sudoku board in that image..");
@@ -118,23 +119,20 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     _sourceImage = new Image();
                     //http://stackoverflow.com/questions/18474727/canvas-has-been-tainted-by-cross-origin-data-work-around
                     _sourceImage.crossOrigin = "anonymous";
-                    _sourceImage.onload = doSomeImageProcessing;
+                    //_sourceImage.onload = doSomeImageProcessing(null);
+                    //_sourceImage.onload = doSomeImageProcessing;
                     _sourceCanvas = this.mySourceCanvas.nativeElement;
                     _normalizedCanvas = this.myNormalizedCanvas.nativeElement;
                     _sourceContext = _sourceCanvas.getContext("2d");
                     _normalizedContext = _normalizedCanvas.getContext("2d");
                 };
-                SudokuRendererComponent.prototype.renderBoardImage = function (inImageURL) {
-                    var correctedUrl = 'the corrected url';
-                    var lastindexOfSlash = inImageURL.lastIndexOf('/');
-                    //correctedUrl = 'blob:null' + inImageURL.substr(lastindexOfSlash);
-                    //console.log('corrected url -- ' + correctedUrl);
-                    //_sourceImage.src = correctedUrl;
+                SudokuRendererComponent.prototype.renderBoardImage = function (inImageURL, inCallback, inBoard) {
+                    //_sourceImage.onload = doSomeImageProcessing(inCallback);
+                    _sourceImage.digitsCallback = inCallback;
+                    _sourceImage.board = inBoard;
+                    _sourceImage.onload = doSomeImageProcessing;
                     _sourceImage.src = inImageURL;
                     _sourceImage.setAttribute('class', 'loaded');
-                    //_sourceImage.height = 640;
-                    //_sourceImage.width = 480;
-                    //var _bbs; //BBSud.SudBitmap
                 };
                 __decorate([
                     core_1.ViewChild('sourceCanvas'), 
@@ -148,7 +146,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     core_1.Component({
                         selector: 'renderer-cmp',
                         providers: [],
-                        template: "\n        <div id=\"canvasWrapper\">\n            <canvas #sourceCanvas id=\"source\"></canvas>\n            <canvas #normalizedCanvas id=\"normalized\"></canvas>\n        </div>\n    ",
+                        template: "\n        <div id=\"canvasWrapper\" hidden>\n            <canvas #sourceCanvas id=\"source\"></canvas>\n            <canvas #normalizedCanvas id=\"normalized\"></canvas>\n        </div>\n    ",
                         styleUrls: [],
                         directives: [],
                         inputs: []

@@ -12,6 +12,18 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
     };
     var core_1, board_1, player_1, inconsistency_1, contraddiction_1, cell_component_1, boardRenderer_component_1;
     var BoardComponent;
+    function processRenderedInfo(inDigits, inBoard) {
+        console.log('digits -- ' + inDigits);
+        //let renderedDigitIndex = 0;
+        for (var i = 0; i < this.board.rows.length; i++) {
+            var thisRow = this.board.rows[i];
+            for (var j = 0; j < thisRow.cells.length; j++) {
+                if (inDigits[i][j]) {
+                    thisRow.cells[j].val = inDigits[i][j];
+                }
+            }
+        }
+    }
     return {
         setters:[
             function (core_1_1) {
@@ -161,7 +173,8 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                     console.log(inEvent.target.value);
                     console.log(inEvent.target.files[0].name);
                     console.log(URL.createObjectURL(inEvent.target.files[0]));
-                    this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]));
+                    var theBoard = this.board;
+                    this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), processRenderedInfo, theBoard);
                 };
                 __decorate([
                     core_1.ViewChild('renderer'), 

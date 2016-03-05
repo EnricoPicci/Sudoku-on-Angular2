@@ -15,7 +15,7 @@ import {Component, ViewChild} from 'angular2/core';
     selector: 'renderer-cmp',
 	providers: [],
     template: `
-        <div id="canvasWrapper">
+        <div id="canvasWrapper" hidden>
             <canvas #sourceCanvas id="source"></canvas>
             <canvas #normalizedCanvas id="normalized"></canvas>
         </div>
@@ -32,7 +32,8 @@ export class SudokuRendererComponent {
         _sourceImage = new Image();
         //http://stackoverflow.com/questions/18474727/canvas-has-been-tainted-by-cross-origin-data-work-around
         _sourceImage.crossOrigin = "anonymous";
-        _sourceImage.onload = doSomeImageProcessing;
+        //_sourceImage.onload = doSomeImageProcessing(null);
+        //_sourceImage.onload = doSomeImageProcessing;
         
         _sourceCanvas = this.mySourceCanvas.nativeElement;
         _normalizedCanvas = this.myNormalizedCanvas.nativeElement;
@@ -41,20 +42,13 @@ export class SudokuRendererComponent {
         
     }
     
-    public renderBoardImage(inImageURL: string) {
-        
-        let correctedUrl = 'the corrected url';
-        let lastindexOfSlash = inImageURL.lastIndexOf('/');
-        //correctedUrl = 'blob:null' + inImageURL.substr(lastindexOfSlash);
-        //console.log('corrected url -- ' + correctedUrl);
-        //_sourceImage.src = correctedUrl;
+    public renderBoardImage(inImageURL: string, inCallback: any, inBoard: any) {
+        //_sourceImage.onload = doSomeImageProcessing(inCallback);
+        _sourceImage.digitsCallback = inCallback;
+        _sourceImage.board = inBoard;
+        _sourceImage.onload = doSomeImageProcessing;
         _sourceImage.src = inImageURL;
         _sourceImage.setAttribute('class', 'loaded');
-        
-        //_sourceImage.height = 640;
-        //_sourceImage.width = 480;
-
-        //var _bbs; //BBSud.SudBitmap
     }
     
 }
@@ -74,6 +68,7 @@ export class SudokuRendererComponent {
             console.log("OCR-ed grid\n", digits.join('\n ')
                 .replace(/,/g, ' ')
                 .replace(/0/g, '.'));
+            this.digitsCallback(digits);
         } else {
             console.log("Couldn't find a sudoku board in that image..");
             return;
