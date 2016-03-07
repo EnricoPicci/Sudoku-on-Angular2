@@ -14,7 +14,7 @@ import {Cell} from '../model/cell'
                 [class.hasNoAllowedValues]="cell.hasNoAllowedValues"
                 [class.setAsInput]="cell.valSetAsInput"
                 [class.disabled]="cell.disabled"
-                [value]="getCellVal()" [disabled]="cell.disabled"
+                value={{getCellVal()}} [disabled]="cell.disabled"
                 (keyup)="setCellVal($event)" (change)="setCellValOnChange($event)">
         </div>
     `,

@@ -72,11 +72,12 @@ export class SudokuRendererComponent {
             setTimeout(function() {
                 theCallback(digits);
             }, 0);*/
-            this.digitsCallback(digits);
+            //this.digitsCallback(digits);
         } else {
             console.log("Couldn't find a sudoku board in that image..");
-            return;
+            //return;
         }
+        this.digitsCallback(digits);
     }
 
     function normalizeImage() {

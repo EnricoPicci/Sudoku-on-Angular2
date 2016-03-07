@@ -24,16 +24,11 @@ System.register(['angular2/core'], function(exports_1, context_1) {
             console.log("OCR-ed grid\n", digits.join('\n ')
                 .replace(/,/g, ' ')
                 .replace(/0/g, '.'));
-            /*var theCallback = this.digitsCallback;
-            setTimeout(function() {
-                theCallback(digits);
-            }, 0);*/
-            this.digitsCallback(digits);
         }
         else {
             console.log("Couldn't find a sudoku board in that image..");
-            return;
         }
+        this.digitsCallback(digits);
     }
     function normalizeImage() {
         var img = _sourceImage, imgW = img.naturalWidth || img.width, imgH = img.naturalHeight || img.height;

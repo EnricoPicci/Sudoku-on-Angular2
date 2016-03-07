@@ -5,6 +5,7 @@ import {Cell} from '../model/cell'
 import {Player} from '../model/player';
 import {Inconsistency} from '../model/inconsistency';
 import {Contraddiction} from '../model/contraddiction';
+import {Unresolvable} from '../model/unresolvable'
 
 import {CellComponent} from './cell.component'
 import {SudokuRendererComponent} from './boardRenderer.component'
@@ -26,13 +27,17 @@ export class BoardComponent {
     public enableSolveButton = true;
     public enablePlayButton = true;
     
-    public selectedFiles;
+    @ViewChild('selectedImage') selectedImageFiles;
     
     public mode;
     
     constructor(private _smartPlayer: Player) {
-        this.resetBoard();
+        this.board = new Board();
     };
+    
+    ngOnInit() {
+        this.initializeBoard();
+    }
     
     solve() {
         this.errorMessage = null;
@@ -80,7 +85,17 @@ export class BoardComponent {
             this.errorMessage = 'This Sudoku does not respect the rules of the game. Check and correct.'
         } else if(inError instanceof Contraddiction) {
             this.errorMessage = 'Some cells have no allowed values.'
-        } else {
+        } else if(inError instanceof Unresolvable) 
+        {
+            // if we get an Unresolvable exception while we attempt to find another solution, it means that
+            // the Sudoku has a solution (the one which we are starting from) but we do not find a new one
+            if (this.isFinishedMode()) {
+                this.setNoOtherSolutionsAvailableMode();
+            } else {
+                this.errorMessage = 'This Sudoku can not be solved by me; check somewhere else if it has a solution'
+            }
+        } else
+        {
             this.errorMessage = 'An unexpected error has occurred ('+inError.message+'). Insult the programmer.'
         }
     }
@@ -96,11 +111,17 @@ export class BoardComponent {
         }
     }
     
-    resetBoard() {
+    initializeBoard() {
+        console.log('Initialize board');
         this.errorMessage = null;
-        this.board = new Board();
         this.setDrawMode();
-        this.selectedFiles = null;
+    }
+    
+    resetBoard() {
+        console.log('Reset board');
+        this.board = new Board();
+        this.selectedImageFiles.nativeElement.value = '';
+        this.initializeBoard();
     }
     
     setPlayMode() {
@@ -145,6 +166,15 @@ export class BoardComponent {
     isNoOtherSolutionsAvailableMode() {
         return this.mode == 'noOtherSolutionsAvailableMode';
     }
+    setUnresolvableMode() {
+        this.enablePlayButton = false;
+        this.enableSolveButton = false;
+        this.enableTryAnotherSolutionButton = false;
+        this.mode = 'unresolvableMode';
+    }
+    isUnresolvableMode() {
+        return this.mode == 'unresolvableMode';
+    }
     
     getTitleMessage() {
         let message;
@@ -155,26 +185,38 @@ export class BoardComponent {
         } else if (this.isFinishedMode()) {
             message = 'Good job!!!! Sudoku solved';
         } else if (this.isNoOtherSolutionsAvailableMode()) {
-            message = 'No other solution is possible';
+            message = 'I tried hard, but I did not find any other solution. Sorry.';
         }
         return message;
     }
     
     imageSelected(inEvent) {
-        console.log(inEvent);
-        console.log(inEvent.value);
-        console.log(inEvent.target.value);
-        console.log(inEvent.target.files[0].name);
-        console.log(URL.createObjectURL(inEvent.target.files[0]));
-        //var theBoard = this.board;
+        console.log('file selected' + inEvent.target.value);
         var theBoardComponent = this;
-        this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), processRenderedInfo, theBoardComponent);
+        this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), this.processRenderedInfo, theBoardComponent);
+    }
+    
+    public processRenderedInfo = (inDigits: any[]) => {
+        console.log('this digits -- ' + inDigits);
+        if (inDigits) {
+            for (var i = 0; i < this.board.rows.length; i++) {
+                let thisRow = this.board.rows[i];
+                for (var j = 0; j < thisRow.cells.length; j++) {
+                    if (inDigits[i][j]) {
+                        thisRow.cells[j].val = inDigits[i][j];
+                        thisRow.cells[j].setSetAsInput(true);
+                    }
+                }
+            }
+        } else {
+            this.errorMessage = "Couldn't find a sudoku board in that image.";
+        }
     }
 
 }
 
     
-    function processRenderedInfo(inDigits: any) {
+    /*function processRenderedInfo(inDigits: any) {
         console.log('digits -- ' + inDigits);
         if (inDigits) {
             for (var i = 0; i < this.boardComponent.board.rows.length; i++) {
@@ -189,4 +231,4 @@ export class BoardComponent {
         } else {
             this.boardComponent.errorMessage = "Couldn't find a sudoku board in that image.";
         }
-    }
+    }*/
