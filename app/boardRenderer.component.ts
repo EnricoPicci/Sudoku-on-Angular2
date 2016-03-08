@@ -42,10 +42,9 @@ export class SudokuRendererComponent {
         
     }
     
-    public renderBoardImage(inImageURL: string, inCallback: any, inBoardComponent: any) {
+    public renderBoardImage(inImageURL: string, inCallback: any) {
         //_sourceImage.onload = doSomeImageProcessing(inCallback);
         _sourceImage.digitsCallback = inCallback;
-        _sourceImage.boardComponent = inBoardComponent;
         _sourceImage.onload = doSomeImageProcessing;
         _sourceImage.src = inImageURL;
         _sourceImage.setAttribute('class', 'loaded');

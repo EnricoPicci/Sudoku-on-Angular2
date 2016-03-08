@@ -192,8 +192,7 @@ export class BoardComponent {
     
     imageSelected(inEvent) {
         console.log('file selected' + inEvent.target.value);
-        var theBoardComponent = this;
-        this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), this.processRenderedInfo, theBoardComponent);
+        this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), this.processRenderedInfo);
     }
     
     public processRenderedInfo = (inDigits: any[]) => {

@@ -221,8 +221,7 @@ System.register(['angular2/core', '../model/board', '../model/player', '../model
                 };
                 BoardComponent.prototype.imageSelected = function (inEvent) {
                     console.log('file selected' + inEvent.target.value);
-                    var theBoardComponent = this;
-                    this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), this.processRenderedInfo, theBoardComponent);
+                    this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), this.processRenderedInfo);
                 };
                 __decorate([
                     core_1.ViewChild('renderer'), 

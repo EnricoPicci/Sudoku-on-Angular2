@@ -125,10 +125,9 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     _sourceContext = _sourceCanvas.getContext("2d");
                     _normalizedContext = _normalizedCanvas.getContext("2d");
                 };
-                SudokuRendererComponent.prototype.renderBoardImage = function (inImageURL, inCallback, inBoardComponent) {
+                SudokuRendererComponent.prototype.renderBoardImage = function (inImageURL, inCallback) {
                     //_sourceImage.onload = doSomeImageProcessing(inCallback);
                     _sourceImage.digitsCallback = inCallback;
-                    _sourceImage.boardComponent = inBoardComponent;
                     _sourceImage.onload = doSomeImageProcessing;
                     _sourceImage.src = inImageURL;
                     _sourceImage.setAttribute('class', 'loaded');
