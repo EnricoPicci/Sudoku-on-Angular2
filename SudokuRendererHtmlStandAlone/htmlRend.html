@@ -1,0 +1,294 @@
+<html>
+<head>
+    <link rel="stylesheet" href="htmlCSS.css">
+</head>
+
+<body>
+<div id="file-area">
+  <h2>1: Drop an image, or..</h2>
+  <input type="file" accept="image/*"/>
+  <!--img#source-image-->
+</div>
+<div id="normalized-area">
+  <h2>2: OCR</h2>
+  <p id="log"></p>
+  <input id="show-normalized" type="checkbox"/>
+  <label for="show-normalized">Show OCR steps</label>
+  <div id="board-wrapper">
+    <canvas id="source"></canvas>
+    <div id="board">
+      <div class="row">
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+        <div class="cell">
+          <input type="number" min="1" max="9"/>
+        </div>
+      </div>
+    </div>
+    <canvas id="normalized"></canvas>
+  </div>
+  <div id="step-solve">
+    <h2>3: Solve</h2>
+    <p>Make sure the blue numbers are correct, and then click "Solve"</p>
+    <button id="solve">Solve</button>
+  </div>
+</div>
+<script src="./ABOUtils.js"></script>
+<script src="./renderer.js"></script>
+</body>
+
+</html>

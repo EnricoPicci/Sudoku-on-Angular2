@@ -1,0 +1,10 @@
+<div id="board1" class="double">
+    <board-cmp #boardComponent1 [board]="boards[0]"></board-cmp>
+    <div class="consoleClass" *ngIf="!isNastyPlay">
+        <button id="playNasty" class="basicButton" type="button" (click)="startPlayNasty()">Play Nasty</button>
+    </div>
+</div>
+
+<div #boardComponent2 id="board2" class="double" *ngIf="isNastyPlay">
+    <board-cmp [board]="boards[1]" [player]="nastyPlayer"></board-cmp>
+</div>

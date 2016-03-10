@@ -1,0 +1,34 @@
+<div class="boardClass">
+    <span>{{getTitleMessage()}}</span>
+    <table>
+        <tbody>
+            <tr *ngFor="#rowOfCells of board.rows">
+                <td *ngFor="#cellInRow of rowOfCells.cells">
+                    <cell-cmp [cell]="cellInRow" (cellValChanged)="cellValChanged($event)"></cell-cmp>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="!isAutomaticPlayer && displayConsole">
+    <div class="consoleClass">
+        <button id="solveButton" class="basicButton" type="button" (click)="solve()"
+            [disabled]="!enableSolveButton">solve</button>
+        <button id="playButton" class="basicButton" type="button" (click)="setPlayMode()"
+            [disabled]="!enablePlayButton">play</button>
+        <button id="resetButton" class="basicButton" type="button" (click)="resetBoard()">reset</button>
+        <button id="tryAnotherSolutionButton" class="basicButton" type="button" 
+            (click)="tryAnotherSolution()" [disabled]="!enableTryAnotherSolutionButton">try another</button>
+    </div>
+    <div class="consoleClass">
+        <form #imageForm (ngSubmit)="onSubmit()" id="uploadForm" enctype="multipart/form-data">
+            <!--input #selectedImage id="selectImage" type="file" name="image" (change)="imageSelected($event)"-->
+            <input #selectedImage id="selectImage" type="file">
+            <input type="submit" value="try to ocr image" name="submit">
+        </form>
+    </div>
+    <renderer-cmp #renderer></renderer-cmp>
+</div>
+<div class="errorMessageClass sudokuAlert sudokuAlert-danger" [hidden]="!errorMessage">
+    <span>{{errorMessage}}</span>
+</div>
