@@ -118,7 +118,7 @@ console.log('triple bar --- ' + tripleBar);
         ]
     ];
     */
-    const OCR_ZON = [
+    var OCR_ZON = [
         //1
         new bbs.OCRChar(['   =##    ',
                 '   ' + tripleBar + '##    ',
