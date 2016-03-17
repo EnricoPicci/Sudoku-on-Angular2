@@ -22,9 +22,9 @@
     </div>
     <div class="consoleClass">
         <form #imageForm (ngSubmit)="onSubmit()" id="uploadForm" enctype="multipart/form-data">
-            <!--input #selectedImage id="selectImage" type="file" name="image" (change)="imageSelected($event)"-->
-            <input #selectedImage id="selectImage" type="file">
-            <input type="submit" value="try to ocr image" name="submit">
+            <input #selectedImage id="selectImage" type="file" (change)="imageSelected($event)">
+            <!--input #selectedImage id="selectImage" type="file"-->
+            <!--input type="submit" value="try to ocr image" name="submit"-->
         </form>
     </div>
     <renderer-cmp #renderer></renderer-cmp>

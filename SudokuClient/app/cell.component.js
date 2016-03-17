@@ -31,13 +31,16 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 };
                 CellComponent.prototype.setCellVal = function (inEvent) {
                     var lastKey = inEvent.keyCode;
-                    // try to understand is a numeric key has been hit and which one
+                    // try to understand if a numeric key has been hit and which one
                     if (lastKey >= 49 && lastKey < 59) {
                         /*this.cell.val = lastKey - 48;
                         inEvent.target.value = this.cell.val;
                         this.cell.valSetAsInput = true;
                         this.cellValChanged.next(this);*/
-                        this.primSetCellVal(lastKey - 48);
+                        console.log('lk --- ' + lastKey);
+                        var lastKeyVal = lastKey - 48;
+                        inEvent.target.value = lastKeyVal;
+                        this.primSetCellVal(lastKeyVal);
                     }
                     else {
                         inEvent.target.value = null;
@@ -61,6 +64,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     }
                 };
                 CellComponent.prototype.primSetCellVal = function (inCellVal) {
+                    //this.cell.val = 0;
                     this.cell.val = inCellVal;
                     this.cell.setValSetAsInput(true);
                     this.cellValChanged.next(this.cell);
@@ -86,7 +90,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     core_1.Component({
                         selector: 'cell-cmp',
                         providers: [],
-                        template: "\n        <div    [class.cellWithBottomBorder]=\"showBottomBorder()\" \n                [class.cellWithRightBorder]=\"showRightBorder()\">\n            <input type=\"number\" min=\"1\" inputmode=\"numeric\" pattern=\"[0-9]*\" title=\"Non-negative integral number\" \n                class=\"cellClass\"\n                [class.inconsistent]=\"isInconsistent()\"\n                [class.hasNoAllowedValues]=\"cell.hasNoAllowedValues\"\n                [class.setAsInput]=\"cell.valSetAsInput\"\n                [class.disabled]=\"cell.disabled\"\n                value={{getCellVal()}} [disabled]=\"cell.disabled\"\n                (keyup)=\"setCellVal($event)\" (change)=\"setCellValOnChange($event)\">\n        </div>\n    ",
+                        template: "\n        <div    [class.cellWithBottomBorder]=\"showBottomBorder()\" \n                [class.cellWithRightBorder]=\"showRightBorder()\">\n            <input type=\"number\" min=\"1\" max=\"9\" length=\"1\" inputmode=\"numeric\" pattern=\"[0-9]*\" title=\"Non-negative integral number\" \n                class=\"cellClass\"\n                [class.inconsistent]=\"isInconsistent()\"\n                [class.hasNoAllowedValues]=\"cell.hasNoAllowedValues\"\n                [class.setAsInput]=\"cell.valSetAsInput\"\n                [class.disabled]=\"cell.disabled\"\n                value={{getCellVal()}} [disabled]=\"cell.disabled\"\n                (keyup)=\"setCellVal($event)\" (change)=\"setCellValOnChange($event)\">\n        </div>\n    ",
                         styleUrls: ['../styles/sudoku.css'],
                         directives: [],
                         inputs: ['cell']

@@ -8,7 +8,7 @@ import {Cell} from '../model/cell'
     template: `
         <div    [class.cellWithBottomBorder]="showBottomBorder()" 
                 [class.cellWithRightBorder]="showRightBorder()">
-            <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" 
+            <input type="number" min="1" max="9" length="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" 
                 class="cellClass"
                 [class.inconsistent]="isInconsistent()"
                 [class.hasNoAllowedValues]="cell.hasNoAllowedValues"
@@ -36,13 +36,16 @@ export class CellComponent {
     
     setCellVal(inEvent) {
         let lastKey = inEvent.keyCode;
-        // try to understand is a numeric key has been hit and which one
+        // try to understand if a numeric key has been hit and which one
         if (lastKey >= 49 && lastKey < 59) {
             /*this.cell.val = lastKey - 48;
             inEvent.target.value = this.cell.val;
             this.cell.valSetAsInput = true;
             this.cellValChanged.next(this);*/
-            this.primSetCellVal(lastKey - 48);
+            console.log('lk --- ' + lastKey);
+            let lastKeyVal = lastKey - 48;
+            inEvent.target.value = lastKeyVal;
+            this.primSetCellVal(lastKeyVal);
         } else {
             inEvent.target.value = null;
             this.cell.val = 0;
@@ -66,6 +69,7 @@ export class CellComponent {
     }
     
     private primSetCellVal(inCellVal: number) {
+        //this.cell.val = 0;
         this.cell.val = inCellVal;
         this.cell.setValSetAsInput(true);
         this.cellValChanged.next(this.cell);

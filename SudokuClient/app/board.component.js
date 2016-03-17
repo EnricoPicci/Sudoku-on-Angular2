@@ -263,38 +263,51 @@ System.register(['angular2/core', 'angular2/http', '../model/board', '../model/p
                     console.log('file selected' + inEvent.target.value);
                     this.renderer.renderBoardImage(URL.createObjectURL(inEvent.target.files[0]), this.processRenderedInfo);
                 };
-                /*public getImageOcrServiceUrl() {
-                    return this._environment.baseServiceUrl + 'sudoku/ocrFile';
-                }*/
                 BoardComponent.prototype.onSubmit = function () {
-                    console.log('submit --- ');
-                    // HTMLFormElement
+                    var _this = this;
                     var thisHtmlFormElement = this.imageForm.nativeElement;
                     var thisFormData = new FormData(thisHtmlFormElement);
                     //let thisFormData = new FormData(this.selectedImageFiles.nativeElement);
                     var selectedFileNativeElement = this.selectedImageFiles.nativeElement;
-                    thisFormData.append('imageFile', this.selectedImageFiles.nativeElement.files[0], 'this.jpg');
+                    thisFormData.append('imageFile', selectedFileNativeElement.files[0], 'this.jpg');
                     console.log(this.imageForm);
                     console.log(thisHtmlFormElement);
                     console.log(thisFormData);
-                    //let options = this.getOpionsForPost();
-                    //let jsonProposalString = this.getJsonProposalStringForBackEnd(inProposal, inUserLogged);
-                    /*let myPost = this._http.post(this._environment.baseServiceUrl + 'ocrFile', thisFormData)
-                        .map(res => {
-                                let resJson = res.json();
-                                return resJson;
-                            }
-                        )
-                        .catch(this.handleError);
-                    return myPost;*/
+                    // need to use XMLHttpRequest (https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms/Sending_forms_through_JavaScript)
+                    // and not Angular2 Http client since support for FormData is not yet implemented
+                    // http://stackoverflow.com/questions/35516110/http-post-binary-file-in-angular2
                     var XHR = new XMLHttpRequest();
-                    // We bind the FormData object and the form element
-                    //var FD  = new FormData(form);
                     // We define what will happen if the data are successfully sent
-                    XHR.addEventListener("load", function (event) {
+                    var resCB = function (event) {
+                        console.log('response CB');
+                        console.log('cb --- ' + event);
+                        console.log(XHR.responseText);
+                        var responseJSON = JSON.parse(XHR.responseText);
+                        console.log('e' + responseJSON.error);
+                        console.log('d' + responseJSON.digits);
+                        if (responseJSON.error) {
+                            console.log('em1 -- ' + _this.errorMessage);
+                            _this.errorMessage = responseJSON.error;
+                            console.log('em2 -- ' + _this.errorMessage);
+                        }
+                        else {
+                            _this.processRenderedInfo(responseJSON.digits);
+                        }
+                    };
+                    XHR.addEventListener("load", resCB);
+                    /*XHR.addEventListener("load", function(event) {
                         //alert(event.target.responseText);
-                        alert('OK');
-                    });
+                        //alert('OK');
+                        console.log('response');
+                        console.log(event);
+                        console.log(XHR.responseText);
+                        let responseJSON = JSON.parse(XHR.responseText);
+                        if (responseJSON.error.length > 0) {
+                            this
+                        } else {
+                            
+                        }
+                    });*/
                     // We define what will happen in case of error
                     XHR.addEventListener("error", function (event) {
                         alert('Oups! Something goes wrong.');
