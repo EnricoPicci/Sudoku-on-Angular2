@@ -37,7 +37,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                         inEvent.target.value = this.cell.val;
                         this.cell.valSetAsInput = true;
                         this.cellValChanged.next(this);*/
-                        console.log('lk --- ' + lastKey);
+                        //console.log('lk --- ' + lastKey);
                         var lastKeyVal = lastKey - 48;
                         inEvent.target.value = lastKeyVal;
                         this.primSetCellVal(lastKeyVal);

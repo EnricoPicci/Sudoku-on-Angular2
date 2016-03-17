@@ -39,6 +39,8 @@ export class BoardComponent {
     public isAutomaticPlayer = false;
     public displayConsole = true;
     
+    public iterations = 0;
+    
     @Input('player') set setProposal(inPlayer: Player) {
         this.player = inPlayer;
         if (inPlayer.isAutomaticPlayer) {
@@ -62,7 +64,7 @@ export class BoardComponent {
     solve() {
         this.errorMessage = null;
         try {
-            this.player.solve(this.board);
+            this.iterations = this.player.solve(this.board);
             this.setFinishedMode();
         } catch(ex) {
             this.handleError(ex);
@@ -71,8 +73,8 @@ export class BoardComponent {
     
     tryAnotherSolution() {
         try {
-            let iterations = this.player.tryAnotherSolution(this.board);
-            if (iterations == 0) {
+            this.iterations = this.player.tryAnotherSolution(this.board);
+            if (this.iterations == 0) {
                 this.setNoOtherSolutionsAvailableMode();
             }
         } catch(ex) {

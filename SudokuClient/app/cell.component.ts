@@ -42,7 +42,7 @@ export class CellComponent {
             inEvent.target.value = this.cell.val;
             this.cell.valSetAsInput = true;
             this.cellValChanged.next(this);*/
-            console.log('lk --- ' + lastKey);
+            //console.log('lk --- ' + lastKey);
             let lastKeyVal = lastKey - 48;
             inEvent.target.value = lastKeyVal;
             this.primSetCellVal(lastKeyVal);

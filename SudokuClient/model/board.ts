@@ -65,9 +65,9 @@ export class Board {
     public getFirstUndefinedCell()
     {
         let resp = null;
-        for(var i = 0; i < this.cells.length; i++)
+        for(var i = 0; i < this.rows.length; i++)
         {
-            for(var j = 0; j < this.cells.length; j++) {
+            for(var j = 0; j < this.columns.length; j++) {
                 let cell = this.cells[i][j];
                 if (cell.val == 0)
                 {
@@ -77,6 +77,42 @@ export class Board {
             }
         }
         return resp;
+    }
+    
+    public getFirstUndefinedCellSorted()
+    {
+        let resp = null;
+        let cellsOrderedByDecresingComplexity = new Array<Cell>();
+        for(var i = 0; i < this.rows.length; i++)
+        {
+            for(var j = 0; j < this.columns.length; j++) {
+                let cell = this.cells[i][j];
+                if (cell.val == 0)
+                {
+                    cellsOrderedByDecresingComplexity.push(this.cells[i][j]);
+                }
+            }
+        }
+        cellsOrderedByDecresingComplexity = cellsOrderedByDecresingComplexity.sort(function(a, b){
+                return a.allowedValues.length - b.allowedValues.length;
+            }
+        );
+        if (cellsOrderedByDecresingComplexity.length > 0) {
+            resp = cellsOrderedByDecresingComplexity[0];
+        }
+        return resp;
+        /*for(var i = 0; i < this.rows.length; i++)
+        {
+            for(var j = 0; j < this.columns.length; j++) {
+                let cell = this.cells[i][j];
+                if (cell.val == 0)
+                {
+                    resp = cell;
+                    return resp;
+                }
+            }
+        }
+        return resp;*/
     }
 
     public isFinished()

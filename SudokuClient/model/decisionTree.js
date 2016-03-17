@@ -28,7 +28,7 @@ System.register(['./decision'], function(exports_1, context_1) {
                     }
                 };
                 DecisionTree.prototype.nextDecision = function () {
-                    this.currentDecision = new decision_1.Decision(this.board.getFirstUndefinedCell(), this.currentDecision);
+                    this.currentDecision = new decision_1.Decision(this.board.getFirstUndefinedCellSorted(), this.currentDecision);
                     if (this.root == null)
                         this.root = this.currentDecision;
                     this.currentDecision.perform();

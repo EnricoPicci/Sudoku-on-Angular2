@@ -33,7 +33,7 @@ export class DecisionTree {
 
     public nextDecision()
     {
-        this.currentDecision = new Decision(this.board.getFirstUndefinedCell(), this.currentDecision);
+        this.currentDecision = new Decision(this.board.getFirstUndefinedCellSorted(), this.currentDecision);
         if (this.root == null)
             this.root = this.currentDecision;
         this.currentDecision.perform();

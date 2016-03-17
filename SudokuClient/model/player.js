@@ -20,7 +20,7 @@ System.register(['./decisionTree', './iterationExcess', './contraddiction', './i
         execute: function() {
             Player = (function () {
                 function Player() {
-                    this.maxIterations = 10000;
+                    this.maxIterations = 1000000;
                     // this is the index of the last cell that this player has set on the Board 
                     // that represents the Sudoku we are playing
                     this.lastCellSetIndex = -1;
@@ -143,7 +143,7 @@ System.register(['./decisionTree', './iterationExcess', './contraddiction', './i
                         }
                         catch (ex) {
                             if (ex instanceof contraddiction_1.Contraddiction) {
-                                console.log(ex.message);
+                                //console.log(ex.message);
                                 decision = this.decisionTree.changeDecision();
                                 hasContraddiction = true;
                             }

@@ -10,7 +10,7 @@ import {Inconsistency} from './inconsistency'
 export class Player {
     decisionTree: DecisionTree;
     
-    maxIterations = 10000;
+    maxIterations = 1000000;
     
     // this is the array of the cells whose value has been identified 
     // during the solution process
@@ -170,7 +170,7 @@ export class Player {
             catch (ex)
             {
                 if (ex instanceof Contraddiction) {
-                    console.log(ex.message);
+                    //console.log(ex.message);
                     decision = this.decisionTree.changeDecision();
                     hasContraddiction = true;                    
                 } else {

@@ -37,12 +37,16 @@ System.register(['angular2/core', './board.component', '../model/board', '../mod
                     this.boards[0] = new board_1.Board();
                 };
                 DoubleBoardComponent.prototype.startPlayNasty = function () {
+                    var _this = this;
                     this.boards[1] = this.boards[0].copy();
                     this.isNastyPlay = true;
                     this.nastyPlayer = new player_1.Player();
                     this.nastyPlayer.setMessage('I am the nasty player');
                     this.nastyPlayer.isAutomaticPlayer = true;
-                    this.nastyPlayer.playNasty(this.boards[1]);
+                    //this.nastyPlayer.playNasty(this.boards[1]);
+                    setTimeout(function () {
+                        _this.nastyPlayer.playNasty(_this.boards[1]);
+                    }, 1);
                     this.boardComponent1.displayConsole = false;
                     this.boardComponent1.setPlayMode();
                 };

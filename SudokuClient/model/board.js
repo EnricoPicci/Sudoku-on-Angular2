@@ -57,8 +57,8 @@ System.register(['./cell', './rowColumnSet'], function(exports_1, context_1) {
                 };
                 Board.prototype.getFirstUndefinedCell = function () {
                     var resp = null;
-                    for (var i = 0; i < this.cells.length; i++) {
-                        for (var j = 0; j < this.cells.length; j++) {
+                    for (var i = 0; i < this.rows.length; i++) {
+                        for (var j = 0; j < this.columns.length; j++) {
                             var cell = this.cells[i][j];
                             if (cell.val == 0) {
                                 resp = cell;
@@ -67,6 +67,37 @@ System.register(['./cell', './rowColumnSet'], function(exports_1, context_1) {
                         }
                     }
                     return resp;
+                };
+                Board.prototype.getFirstUndefinedCellSorted = function () {
+                    var resp = null;
+                    var cellsOrderedByDecresingComplexity = new Array();
+                    for (var i = 0; i < this.rows.length; i++) {
+                        for (var j = 0; j < this.columns.length; j++) {
+                            var cell = this.cells[i][j];
+                            if (cell.val == 0) {
+                                cellsOrderedByDecresingComplexity.push(this.cells[i][j]);
+                            }
+                        }
+                    }
+                    cellsOrderedByDecresingComplexity = cellsOrderedByDecresingComplexity.sort(function (a, b) {
+                        return a.allowedValues.length - b.allowedValues.length;
+                    });
+                    if (cellsOrderedByDecresingComplexity.length > 0) {
+                        resp = cellsOrderedByDecresingComplexity[0];
+                    }
+                    return resp;
+                    /*for(var i = 0; i < this.rows.length; i++)
+                    {
+                        for(var j = 0; j < this.columns.length; j++) {
+                            let cell = this.cells[i][j];
+                            if (cell.val == 0)
+                            {
+                                resp = cell;
+                                return resp;
+                            }
+                        }
+                    }
+                    return resp;*/
                 };
                 Board.prototype.isFinished = function () {
                     return this.getFirstUndefinedCell() == null;

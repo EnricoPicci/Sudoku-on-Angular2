@@ -55,6 +55,7 @@ System.register(['angular2/core', 'angular2/http', '../model/board', '../model/p
                     this.enablePlayButton = true;
                     this.isAutomaticPlayer = false;
                     this.displayConsole = true;
+                    this.iterations = 0;
                     this.processRenderedInfo = function (inDigits) {
                         console.log('this digits -- ' + inDigits);
                         if (inDigits) {
@@ -95,7 +96,7 @@ System.register(['angular2/core', 'angular2/http', '../model/board', '../model/p
                 BoardComponent.prototype.solve = function () {
                     this.errorMessage = null;
                     try {
-                        this.player.solve(this.board);
+                        this.iterations = this.player.solve(this.board);
                         this.setFinishedMode();
                     }
                     catch (ex) {
@@ -104,8 +105,8 @@ System.register(['angular2/core', 'angular2/http', '../model/board', '../model/p
                 };
                 BoardComponent.prototype.tryAnotherSolution = function () {
                     try {
-                        var iterations = this.player.tryAnotherSolution(this.board);
-                        if (iterations == 0) {
+                        this.iterations = this.player.tryAnotherSolution(this.board);
+                        if (this.iterations == 0) {
                             this.setNoOtherSolutionsAvailableMode();
                         }
                     }

@@ -30,7 +30,11 @@ export class DoubleBoardComponent {
         this.nastyPlayer = new Player();
         this.nastyPlayer.setMessage('I am the nasty player');
         this.nastyPlayer.isAutomaticPlayer = true;
-        this.nastyPlayer.playNasty(this.boards[1]);
+        //this.nastyPlayer.playNasty(this.boards[1]);
+        setTimeout(() => {
+            this.nastyPlayer.playNasty(this.boards[1]);
+        }, 1
+        )
         this.boardComponent1.displayConsole = false;
         this.boardComponent1.setPlayMode();
     }
