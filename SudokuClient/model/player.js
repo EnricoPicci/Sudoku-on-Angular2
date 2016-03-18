@@ -19,8 +19,12 @@ System.register(['./decisionTree', './iterationExcess', './contraddiction', './i
             }],
         execute: function() {
             Player = (function () {
+<<<<<<< HEAD
                 function Player(_messageRepositoryService) {
                     this._messageRepositoryService = _messageRepositoryService;
+=======
+                function Player() {
+>>>>>>> 7913dd52435130319e2416066de9153dd9a84e0f
                     this.maxIterations = 1000000;
                     // this is the index of the last cell that this player has set on the Board 
                     // that represents the Sudoku we are playing
